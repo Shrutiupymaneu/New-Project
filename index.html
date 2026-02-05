@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Be My Valentine 💖</title>
+
+<style>
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: 'Segoe UI', sans-serif;
+    background-image: url("bg.jpg"); /* your local image */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    z-index: 0;
+  }
+
+  .card {
+    position: relative;
+    z-index: 1;
+    background: rgba(255, 255, 255, 0.18);
+    backdrop-filter: blur(14px);
+    padding: 35px 25px;
+    border-radius: 22px;
+    text-align: center;
+    color: white;
+    width: 90%;
+    max-width: 380px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+  }
+
+  h1 {
+    font-size: clamp(20px, 5vw, 26px);
+    margin-bottom: 25px;
+  }
+
+  .buttons {
+    position: relative;
+    width: 100%;
+    height: 130px;
+  }
+
+  button {
+    padding: 12px 26px;
+    font-size: 16px;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    position: absolute;
+    transition: transform 0.15s;
+  }
+
+  button:active {
+    transform: scale(0.95);
+  }
+
+  #yesBtn {
+    background: linear-gradient(135deg, #ff4d6d, #ff8fa3);
+    color: white;
+    left: 10%;
+    top: 45px;
+    z-index: 2;
+  }
+
+  #noBtn {
+    background: #444;
+    color: white;
+    left: 60%;
+    top: 45px;
+    pointer-events: none; /* 🔥 desktop cursor can NEVER touch */
+  }
+
+  #heart {
+    display: none;
+    font-size: clamp(70px, 18vw, 100px);
+    margin-top: 20px;
+    animation: beat 1s infinite;
+  }
+
+  @keyframes beat {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.25); }
+    100% { transform: scale(1); }
+  }
+
+  .shayari {
+    display: none;
+    margin-top: 20px;
+    font-size: clamp(16px, 4.5vw, 20px);
+    line-height: 1.5;
+    color: #ffd6e0;
+  }
+</style>
+</head>
+
+<body>
+
+<div class="card">
+  <h1>Will you be my Valentine? 💕</h1>
+
+  <div class="buttons" id="buttons">
+    <button id="yesBtn">Yes 💖</button>
+    <button id="noBtn">No 🙈</button>
+  </div>
+
+  <div id="heart">❤️</div>
+
+  <div class="shayari" id="shayari">
+    Tumhari ek “YES” ne,<br>
+    Meri duniya roshan kar di ✨<br>
+    Ab har Valentine,<br>
+    Sirf tumhare naam ❤️
+  </div>
+</div>
+
+<script>
+  const noBtn = document.getElementById("noBtn");
+  const yesBtn = document.getElementById("yesBtn");
+  const buttons = document.getElementById("buttons");
+  const heart = document.getElementById("heart");
+  const shayari = document.getElementById("shayari");
+
+  function moveNoButton() {
+    const maxX = buttons.clientWidth - noBtn.offsetWidth;
+    const maxY = buttons.clientHeight - noBtn.offsetHeight;
+
+    const x = Math.random() * maxX;
+    const y = Math.random() * maxY;
+
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
+  }
+
+  /* 🖥 Desktop: cursor paas aate hi bhaag jaaye */
+  buttons.addEventListener("mousemove", (e) => {
+    const rect = noBtn.getBoundingClientRect();
+    const dx = e.clientX - (rect.left + rect.width / 2);
+    const dy = e.clientY - (rect.top + rect.height / 2);
+    const distance = Math.sqrt(dx * dx + dy * dy);
+
+    if (distance < 120) {
+      moveNoButton();
+    }
+  });
+
+  /* 📱 Mobile: touch karte hi bhaag jaaye */
+  buttons.addEventListener("touchstart", () => {
+    moveNoButton();
+  });
+
+  /* YES click */
+  yesBtn.addEventListener("click", () => {
+    buttons.style.display = "none";
+    heart.style.display = "block";
+    shayari.style.display = "block";
+  });
+
+  /* initial random position */
+  moveNoButton();
+</script>
+
+</body>
+</html>
